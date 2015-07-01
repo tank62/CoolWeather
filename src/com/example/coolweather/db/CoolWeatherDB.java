@@ -35,7 +35,7 @@ public class CoolWeatherDB {
 	 * »ñÈ¡CoolWeatherÊµÀý
 	 */
 	public synchronized static CoolWeatherDB getInstance(Context context) {
-		boolean isdelet = context.deleteDatabase(DB_NAME);
+		//boolean isdelet = context.deleteDatabase(DB_NAME);
 		if (coolweatherDB == null) {
 			 coolweatherDB = new CoolWeatherDB(context);
 		}

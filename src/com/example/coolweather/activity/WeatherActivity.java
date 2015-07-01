@@ -1,6 +1,7 @@
 package com.example.coolweather.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -8,6 +9,8 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,7 +19,7 @@ import com.example.coolweather.util.HttpCallbackListener;
 import com.example.coolweather.util.HttpUtil;
 import com.example.coolweather.util.Utility;
 
-public class WeatherActivity extends Activity {
+public class WeatherActivity extends Activity implements OnClickListener {
 
 	private LinearLayout weatherinfoLayout;
 
@@ -32,6 +35,9 @@ public class WeatherActivity extends Activity {
 
 	private TextView currentDateText;
 
+	private Button switchCity;
+
+	private Button refresh;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,7 +49,10 @@ public class WeatherActivity extends Activity {
 		temp1Text = (TextView) findViewById(R.id.temp1);
 		temp2Text = (TextView) findViewById(R.id.temp2);
 		currentDateText = (TextView) findViewById(R.id.current_date);
-
+		switchCity = (Button)findViewById(R.id.switch_city);
+		refresh = (Button)findViewById(R.id.refresh_weather);
+		switchCity.setOnClickListener(this);
+		refresh.setOnClickListener(this);
 		String countyCode = getIntent().getStringExtra("county_code");
 		if (!TextUtils.isEmpty(countyCode)) {
 			publishText.setText("同步中...");
@@ -76,7 +85,7 @@ public class WeatherActivity extends Activity {
 	}
 
 	private void queryWeather(String countyCode) {
-		String address = "http://apis.baidu.com/apistore/weatherservice/weather?citypinyin=";
+		String address = "http://apis.baidu.com/apistore/weatherservice/cityid?cityid=";
 		address = address.concat(countyCode);
 		HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
 			@Override
@@ -114,5 +123,27 @@ public class WeatherActivity extends Activity {
 		currentDateText.setText(prefs.getString("current_date",""));
 		weatherinfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch(v.getId()){
+		case R.id.switch_city :
+			Intent intent = new Intent(this,ChooseAreaActivity.class);
+			intent.putExtra("from_weatheractivity", true);
+			startActivity(intent);
+			finish();
+			break;
+		case R.id.refresh_weather :
+			publishText.setText("同步中...");
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			String countyCode = prefs.getString("weather_code", "");
+			if (!TextUtils.isEmpty(countyCode)) {
+				queryWeather(countyCode);
+			}
+			break;
+			default:
+				break;
+		}
 	}
 }

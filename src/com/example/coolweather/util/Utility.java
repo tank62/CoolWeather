@@ -87,7 +87,8 @@ public class Utility {
 				String temp2 = weatherinfo.getString("h_tmp");
 				String weatherDesp = weatherinfo.getString("weather");
 				String publishTime = weatherinfo.getString("time");
-				saveWeatherInfo(context,cityName,citycode,temp1,temp2,weatherDesp,publishTime);
+				String cityPinyin = weatherinfo.getString("pinyin");
+				saveWeatherInfo(context,cityName,citycode,temp1,temp2,weatherDesp,publishTime,cityPinyin);
 			}else{
 				String message =  (String) jsonobject.get("errMsg");
 				Log.e("handleWeatherResponse", message);
@@ -99,7 +100,7 @@ public class Utility {
 
 	private static void saveWeatherInfo(Context context, String cityName,
 			String citycode, String temp1, String temp2, String weatherDesp,
-			String publishTime) {
+			String publishTime,String pinyin) {
 		
 		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d",Locale.CHINA);
@@ -110,7 +111,8 @@ public class Utility {
 		editor.putString("temp2", temp2);
 		editor.putString("weather_desp", weatherDesp);
 		editor.putString("publish_time", publishTime);
-		editor.putString("publish_time", sdf.format(new Date()));
+		editor.putString("current_date", sdf.format(new Date()));
+		editor.putString("city_pinyin", pinyin);
 		editor.commit();
 		
 	}
