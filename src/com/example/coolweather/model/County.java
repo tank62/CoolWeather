@@ -6,6 +6,7 @@ public class County {
 	private String countyName;
 	private String countycode;
 	private int cityId;
+	private String pinyin;
 	public int getId() {
 		return id;
 	}
@@ -29,5 +30,11 @@ public class County {
 	}
 	public void setCityId(int cityId) {
 		this.cityId = cityId;
+	}
+	public String getPinyin() {
+		return pinyin;
+	}
+	public void setPinyin(String pinyin) {
+		this.pinyin = pinyin;
 	}
 }

@@ -5,6 +5,7 @@ public class City {
 	private String cityName;
 	private String cityCode;
 	private int provinceId;
+	private String pinyin;
 	public int getId() {
 		return id;
 	}
@@ -28,5 +29,11 @@ public class City {
 	}
 	public void setProvinceId(int provinceId) {
 		this.provinceId = provinceId;
+	}
+	public String getPinyin() {
+		return pinyin;
+	}
+	public void setPinyin(String pinyin) {
+		this.pinyin = pinyin;
 	}
 }
